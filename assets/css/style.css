@@ -18,13 +18,13 @@ body {
 .page-wrapper {
   width: 100%;
   max-width: 640px;
-  padding: 56px 12px 96px; /* 아래 패딩 조금 더 늘려서 전체 여백 확보 */
+  padding: 56px 12px 120px; /* 아래 패딩 더 늘려서 전체 여백 확보 */
 }
 
 .card {
   width: 100%;
   max-width: 420px;
-  margin: 0 auto 150px; /* 카드와 연혁 사이 간격 더 넉넉하게 증가 */
+  margin: 0 auto 220px; /* 메인과 연혁 사이 간격을 크게 늘림 (거의 한 페이지 느낌) */
   padding: 32px 24px 28px;
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.9);
@@ -211,7 +211,7 @@ body {
 .timeline-section {
   width: 100%;
   max-width: 480px;
-  margin: 190px auto 0; /* 페이지 전환 느낌을 위해 상단 여백 더 증가 */
+  margin: 260px auto 0; /* 메인 카드와 타임라인 사이를 더 많이 띄워서 확실한 전환 느낌 */
   padding: 40px 8px 0;
 }
 
@@ -294,16 +294,16 @@ body {
 
 @media (max-width: 480px) {
   .page-wrapper {
-    padding: 40px 10px 84px;
+    padding: 40px 10px 110px; /* 모바일에서도 아래 여백 넉넉하게 */
   }
 
   .card {
     padding: 24px 18px 22px;
-    margin-bottom: 140px; /* 모바일에서도 카드와 연혁 사이 간격 더 넉넉하게 */
+    margin-bottom: 220px; /* 모바일에서도 메인-연혁 간 큰 간격 */
   }
 
   .timeline-section {
     padding: 32px 4px 0;
-    margin-top: 170px; /* 모바일에서 카드와 연혁 사이 간격 추가 확대 */
+    margin-top: 260px; /* 작은 화면에서도 한 화면 이상 떨어진 느낌 */
   }
 }
