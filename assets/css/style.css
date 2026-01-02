@@ -290,6 +290,15 @@ body {
   justify-content: center;
   color: rgba(60, 20, 45, 0.95);
   font-size: 1.1rem;
+  overflow: hidden; /* 큰 이미지가 넘치지 않도록 */
+}
+
+.timeline-photo-placeholder img {
+  width: 100%;      /* 타임라인 카드 너비에 맞추기 */
+  max-height: 260px;/* 너무 길게 나오지 않도록 최대 높이 제한 */
+  height: auto;     /* 비율 유지 */
+  object-fit: cover;/* 영역을 꽉 채우면서 예쁘게 잘리도록 */
+  border-radius: 14px;
 }
 
 @media (max-width: 480px) {
