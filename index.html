@@ -19,7 +19,7 @@
       background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 30%, #f6d365 100%);
       color: #222;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       scroll-behavior: smooth;
     }
@@ -27,13 +27,13 @@
     .page-wrapper {
       width: 100%;
       max-width: 640px;
-      padding: 32px 12px 48px;
+      padding: 56px 12px 64px;
     }
 
     .card {
       width: 100%;
       max-width: 420px;
-      margin: 0 auto 32px;
+      margin: 0 auto 80px;
       padding: 32px 24px 28px;
       border-radius: 24px;
       background: rgba(255, 255, 255, 0.9);
@@ -118,17 +118,18 @@
     .memory-button {
       display: inline-block;
       margin-top: 6px;
-      padding: 6px 18px;
+      padding: 8px 22px;
       border-radius: 999px;
       border: none;
-      background: #ff6b81;
-      color: #fff;
-      font-size: 1.2rem;
+      background: #ffccd5;
+      color: #ff4b6a;
+      font-size: 1.3rem;
       cursor: pointer;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
       transform: translateY(0);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
       opacity: 0;
+      letter-spacing: 0.03em;
     }
 
     .memory-button.visible {
@@ -136,7 +137,8 @@
     }
 
     .memory-button:hover {
-      background: #ff4b6a;
+      background: #ffe4ea;
+      color: #ff2d55;
       transform: translateY(-2px);
       box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
     }
@@ -178,14 +180,14 @@
     .timeline-section {
       width: 100%;
       max-width: 480px;
-      margin: 0 auto;
-      padding: 16px 8px 0;
+      margin: 120px auto 0;
+      padding: 40px 8px 0;
     }
 
     .timeline-title {
       font-size: 1.8rem;
       text-align: center;
-      color: #fff;
+      color: #fdf1f4;
       margin-bottom: 12px;
       text-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
     }
@@ -193,7 +195,7 @@
     .timeline-subtitle {
       font-size: 1.2rem;
       text-align: center;
-      color: #ffeef3;
+      color: #ffe0eb;
       margin-bottom: 20px;
     }
 
@@ -223,13 +225,13 @@
 
     .timeline-date {
       font-size: 1.1rem;
-      color: #fff;
+      color: #ffeef7;
       margin-bottom: 4px;
     }
 
     .timeline-caption {
       font-size: 1.25rem;
-      color: #fff9fb;
+      color: #fff3f8;
       margin-bottom: 6px;
     }
 
@@ -242,13 +244,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: #ffeef7;
       font-size: 1.1rem;
     }
 
     @media (max-width: 480px) {
+      .page-wrapper {
+        padding: 40px 10px 56px;
+      }
+
       .card {
         padding: 24px 18px 22px;
+        margin-bottom: 72px;
       }
 
       .title-line {
@@ -265,7 +272,8 @@
       }
 
       .timeline-section {
-        padding: 8px 4px 0;
+        padding: 32px 4px 0;
+        margin-top: 96px;
       }
     }
   </style>
