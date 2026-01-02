@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
+  <!-- BGM: 친구 방식처럼 HTML audio 태그로 자동 재생 시도 -->
+  <audio id="bgm" loop autoplay>
+    <source src="assets/audio/bgm.mp3" type="audio/mpeg" />
+  </audio>
+
   <!-- 화면 상단 오른쪽 고정 BGM 버튼 -->
   <button class="bgm-button" id="bgmButton" type="button" aria-label="BGM 재생/일시정지">
     <span class="bgm-icon">▶</span>

@@ -1,4 +1,4 @@
-// 메인 스크립트: 기존 index.html 의 <script> 내용이 여기로 이동됩니다.
+// 메인 스크립트: 기존 index.html 의 <script> 내용이 여기로 이동된 상태
 
 // 메인 메시지, 인트로, 버튼 애니메이션
 const lines = document.querySelectorAll('.message-line');
@@ -8,6 +8,7 @@ const date = document.getElementById('date');
 const footer = document.getElementById('footer');
 const memoryButton = document.getElementById('memoryButton');
 const bgmButton = document.getElementById('bgmButton');
+const bgmAudio = document.getElementById('bgm'); // 친구 방식: HTML audio 태그
 let index = 0;
 
 function showNextLine() {
@@ -24,12 +25,11 @@ function showNextLine() {
   }
 }
 
-// 전역 BGM 객체 (자동 재생 + 토글에서 같이 사용)
-let bgmInstance = null;
+// BGM 상태는 audio 엘리먼트로 직접 관리
 let bgmIsPlaying = false;
 
 window.addEventListener('load', () => {
-  // 항상 맨 위에서 시작하도록 강제 (브라우저의 스크롤 위치 복원 무시)
+  // 항상 맨 위에서 시작
   window.scrollTo(0, 0);
 
   // 1단계: intro 텍스트 페이드 인
@@ -38,13 +38,13 @@ window.addEventListener('load', () => {
       introText.classList.add('show');
     }, 300);
 
-    // 2단계: 잠깐 보여준 뒤, 위로 작아지면서 이동하는 느낌
+    // 2단계: 위로 올라가면서 작아지는 효과
     setTimeout(() => {
       introText.classList.add('shrink');
     }, 1800);
   }
 
-  // 3단계: intro 사라지고, 실제 태그/날짜/문장 시작
+  // 3단계: intro 사라지고 태그/날짜/메시지 시작
   setTimeout(() => {
     const overlay = document.querySelector('.intro-overlay');
     if (overlay) overlay.style.display = 'none';
@@ -53,29 +53,56 @@ window.addEventListener('load', () => {
     setTimeout(showNextLine, 400);
   }, 2500);
 
-  // 페이지 로드 때 BGM 자동 재생 시도 (브라우저 정책에 따라 막힐 수 있음)
-  if (!bgmInstance) {
-    bgmInstance = new Audio('assets/audio/bgm.mp3');
-    bgmInstance.loop = true;
-  }
-
-  bgmInstance
-    .play()
-    .then(() => {
+  // 친구 방식: HTML audio 태그에 autoplay가 걸려 있으므로, 여기서는 상태만 동기화 시도
+  if (bgmAudio) {
+    // 브라우저가 autoplay를 허용했다면 이미 재생 중일 수 있음
+    if (!bgmAudio.paused) {
       bgmIsPlaying = true;
       if (bgmButton) {
         const bgmIcon = bgmButton.querySelector('.bgm-icon');
         if (bgmIcon) bgmIcon.textContent = '❚❚';
       }
-    })
-    .catch((err) => {
-      console.warn('자동 BGM 재생이 차단되었습니다. 사용자가 버튼을 눌러야 합니다.', err);
-    });
+    } else {
+      // 혹시 멈춰 있으면 play()를 한 번 시도해보고, 막히면 버튼으로만 제어
+      bgmAudio
+        .play()
+        .then(() => {
+          bgmIsPlaying = true;
+          if (bgmButton) {
+            const bgmIcon = bgmButton.querySelector('.bgm-icon');
+            if (bgmIcon) bgmIcon.textContent = '❚❚';
+          }
+        })
+        .catch(() => {
+          // 자동 재생이 막힌 경우: 조용히 두고, 버튼을 누르면 그때부터 재생
+          bgmIsPlaying = false;
+          if (bgmButton) {
+            const bgmIcon = bgmButton.querySelector('.bgm-icon');
+            if (bgmIcon) bgmIcon.textContent = '▶';
+          }
+        });
+    }
+  }
 });
 
-// "우리 추억 보러 갈래?" 버튼 클릭 시, 타임라인 섹션으로 부드럽게 스크롤
+// "우리 추억 보러 갈래?" 버튼 클릭 시 타임라인으로 스크롤 + 첫 상호작용에서 BGM 시작 시도
 if (memoryButton) {
   memoryButton.addEventListener('click', () => {
+    if (bgmAudio && !bgmIsPlaying) {
+      bgmAudio
+        .play()
+        .then(() => {
+          bgmIsPlaying = true;
+          if (bgmButton) {
+            const bgmIcon = bgmButton.querySelector('.bgm-icon');
+            if (bgmIcon) bgmIcon.textContent = '❚❚';
+          }
+        })
+        .catch(() => {
+          // 여기도 막히면 어쩔 수 없음. 사용자가 위쪽 BGM 버튼으로 재생.
+        });
+    }
+
     const target = document.getElementById('memories');
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
@@ -83,7 +110,7 @@ if (memoryButton) {
   });
 }
 
-// 스크롤 시 현재 보이는 타임라인 아이템 하이라이트 (IntersectionObserver)
+// 스크롤 시 타임라인 아이템 하이라이트 (IntersectionObserver)
 const timelineItems = document.querySelectorAll('.timeline-item');
 
 if ('IntersectionObserver' in window && timelineItems.length > 0) {
@@ -105,31 +132,25 @@ if ('IntersectionObserver' in window && timelineItems.length > 0) {
   timelineItems.forEach((item) => observer.observe(item));
 }
 
-// BGM 토글 (아이콘만 변경)
-if (bgmButton) {
+// BGM 토글 버튼: HTML audio 엘리먼트 재생/일시정지 제어
+if (bgmButton && bgmAudio) {
   const bgmIcon = bgmButton.querySelector('.bgm-icon');
-
-  // 전역 인스턴스 보장
-  if (!bgmInstance) {
-    bgmInstance = new Audio('assets/audio/bgm.mp3');
-    bgmInstance.loop = true;
-  }
 
   bgmButton.addEventListener('click', () => {
     if (!bgmIsPlaying) {
-      bgmInstance
+      bgmAudio
         .play()
         .then(() => {
           bgmIsPlaying = true;
-          if (bgmIcon) bgmIcon.textContent = '❚❚'; // 일시정지 아이콘 느낌
+          if (bgmIcon) bgmIcon.textContent = '❚❚';
         })
-        .catch((err) => {
-          console.error('BGM 재생 실패:', err);
+        .catch(() => {
+          // 버튼 클릭인데도 막힌다면 브라우저 정책이 매우 엄격한 경우
         });
     } else {
-      bgmInstance.pause();
+      bgmAudio.pause();
       bgmIsPlaying = false;
-      if (bgmIcon) bgmIcon.textContent = '▶'; // 재생 아이콘
+      if (bgmIcon) bgmIcon.textContent = '▶';
     }
   });
 }
