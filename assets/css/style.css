@@ -106,35 +106,38 @@ body {
   opacity: 1;
 }
 
-/* BGM 토글 버튼: 아이콘형 동그라미 */
+/* BGM 토글 버튼: 상단 오른쪽, 페이지 색감에 맞춘 아이콘형 동그라미 */
 .bgm-button {
-  margin: 0 0 6px;
-  width: 30px;
-  height: 30px;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 107, 129, 0.7);
-  background: rgba(255, 255, 255, 0.9);
-  color: #ff4b6a;
+  border: none;
+  background: radial-gradient(circle at 30% 30%, #ffe5ec 0%, #ffb3c6 45%, #ff6b81 100%);
+  color: #ffffff;
   font-family: "Jua", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
 .bgm-button .bgm-icon {
   line-height: 1;
+  transform: translateX(1px); /* ▶ 살짝 가운데로 */
 }
 
 .bgm-button:hover {
-  background: #ffedf2;
-  color: #ff1744;
-  border-color: #ff1744;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  filter: brightness(1.05);
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.26);
 }
 
 .memory-button {
