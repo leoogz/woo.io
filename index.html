@@ -29,6 +29,8 @@
       background: rgba(255, 255, 255, 0.9);
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.15);
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
     .tag {
@@ -41,6 +43,14 @@
       color: #ff4b6a;
       background: rgba(255, 75, 106, 0.08);
       margin-bottom: 12px;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .tag.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     h1 {
@@ -55,6 +65,14 @@
       font-size: 0.9rem;
       color: #888;
       margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .date.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .message {
@@ -63,12 +81,61 @@
       color: #444;
       margin-bottom: 24px;
       word-break: keep-all;
-      white-space: pre-line;
+    }
+
+    .message-line {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .message-line.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .footer {
       font-size: 0.85rem;
       color: #999;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .footer.visible {
+      opacity: 1;
+    }
+
+    /* 첫 진입용 크게 나오는 메인 문구 */
+    .intro-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .intro-text {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #ff4b6a;
+      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.7s ease, transform 0.7s ease, transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+      white-space: nowrap;
+    }
+
+    .intro-text.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .intro-text.shrink {
+      opacity: 0;
+      transform: translateY(-80px) scale(0.6);
     }
 
     @media (max-width: 480px) {
@@ -83,24 +150,74 @@
       .message {
         font-size: 0.95rem;
       }
+
+      .intro-text {
+        font-size: 1.6rem;
+        white-space: normal;
+      }
     }
   </style>
 </head>
 <body>
   <main class="card">
-    <div class="tag">200 days</div>
+    <!-- 처음에 크게 보여줄 문구 -->
+    <div class="intro-overlay">
+      <div class="intro-text" id="introText">가현 ❤️ 영규 200 days</div>
+    </div>
+
+    <!-- 최종 위치의 타이틀 영역 -->
+    <div class="tag" id="tag">가현 ❤️ 영규 200 days</div>
     <h1>200일을 진심으로 축하해 💕</h1>
-    <p class="date">From 25.06.18 ~ To 26.01.03</p>
-    <p class="message">
-처음 1일부터 하나씩 쌓여서
-어느새 200일이라는 시간이 되었어.
-
-함께한 모든 순간들이 소중했고,
-앞으로의 하루하루도 너와 같이 걷고 싶어.
-
-항상 고맙고, 많이 사랑해.
-    </p>
-    <p class="footer">from. 🐶영규</p>
+    <p class="date" id="date">From 25.06.18 ~ To 26.01.03</p>
+    <div class="message" id="message">
+      <div class="message-line">처음 1일부터 하나씩 쌓여서</div>
+      <div class="message-line">어느새 200일이라는 시간이 되었어.</div>
+      <div class="message-line">함께한 모든 순간들이 소중했고,</div>
+      <div class="message-line">앞으로의 하루하루도 너와 같이 걷고 싶어.</div>
+      <div class="message-line">항상 고맙고, 많이 사랑해.</div>
+    </div>
+    <p class="footer" id="footer">from. 🐶영규</p>
   </main>
+
+  <script>
+    const lines = document.querySelectorAll('.message-line');
+    const introText = document.getElementById('introText');
+    const tag = document.getElementById('tag');
+    const date = document.getElementById('date');
+    const footer = document.getElementById('footer');
+    let index = 0;
+
+    function showNextLine() {
+      if (index < lines.length) {
+        lines[index].classList.add('visible');
+        index++;
+        setTimeout(showNextLine, 900); // 다음 줄 간격
+      } else {
+        // 문장이 다 나오면 footer도 나타나게
+        footer.classList.add('visible');
+      }
+    }
+
+    window.addEventListener('load', () => {
+      // 1단계: intro 텍스트 페이드 인
+      setTimeout(() => {
+        introText.classList.add('show');
+      }, 300);
+
+      // 2단계: 잠깐 보여준 뒤, 위로 작아지면서 이동하는 느낌
+      setTimeout(() => {
+        introText.classList.add('shrink');
+      }, 1800);
+
+      // 3단계: intro 사라지고, 실제 태그/날짜/문장 시작
+      setTimeout(() => {
+        const overlay = document.querySelector('.intro-overlay');
+        if (overlay) overlay.style.display = 'none';
+        tag.classList.add('visible');
+        date.classList.add('visible');
+        setTimeout(showNextLine, 400);
+      }, 2500);
+    });
+  </script>
 </body>
 </html>
