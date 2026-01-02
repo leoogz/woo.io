@@ -24,7 +24,14 @@ function showNextLine() {
   }
 }
 
+// 전역 BGM 객체 (자동 재생 + 토글에서 같이 사용)
+let bgmInstance = null;
+let bgmIsPlaying = false;
+
 window.addEventListener('load', () => {
+  // 항상 맨 위에서 시작하도록 강제 (브라우저의 스크롤 위치 복원 무시)
+  window.scrollTo(0, 0);
+
   // 1단계: intro 텍스트 페이드 인
   if (introText) {
     setTimeout(() => {
@@ -45,6 +52,25 @@ window.addEventListener('load', () => {
     if (date) date.classList.add('visible');
     setTimeout(showNextLine, 400);
   }, 2500);
+
+  // 페이지 로드 때 BGM 자동 재생 시도 (브라우저 정책에 따라 막힐 수 있음)
+  if (!bgmInstance) {
+    bgmInstance = new Audio('assets/audio/bgm.mp3');
+    bgmInstance.loop = true;
+  }
+
+  bgmInstance
+    .play()
+    .then(() => {
+      bgmIsPlaying = true;
+      if (bgmButton) {
+        const bgmIcon = bgmButton.querySelector('.bgm-icon');
+        if (bgmIcon) bgmIcon.textContent = '❚❚';
+      }
+    })
+    .catch((err) => {
+      console.warn('자동 BGM 재생이 차단되었습니다. 사용자가 버튼을 눌러야 합니다.', err);
+    });
 });
 
 // "우리 추억 보러 갈래?" 버튼 클릭 시, 타임라인 섹션으로 부드럽게 스크롤
@@ -82,24 +108,27 @@ if ('IntersectionObserver' in window && timelineItems.length > 0) {
 // BGM 토글 (아이콘만 변경)
 if (bgmButton) {
   const bgmIcon = bgmButton.querySelector('.bgm-icon');
-  const bgm = new Audio('assets/audio/bgm.mp3'); // assets/audio/bgm.mp3 에 파일 추가
-  bgm.loop = true;
-  let isPlaying = false;
+
+  // 전역 인스턴스 보장
+  if (!bgmInstance) {
+    bgmInstance = new Audio('assets/audio/bgm.mp3');
+    bgmInstance.loop = true;
+  }
 
   bgmButton.addEventListener('click', () => {
-    if (!isPlaying) {
-      bgm
+    if (!bgmIsPlaying) {
+      bgmInstance
         .play()
         .then(() => {
-          isPlaying = true;
+          bgmIsPlaying = true;
           if (bgmIcon) bgmIcon.textContent = '❚❚'; // 일시정지 아이콘 느낌
         })
         .catch((err) => {
           console.error('BGM 재생 실패:', err);
         });
     } else {
-      bgm.pause();
-      isPlaying = false;
+      bgmInstance.pause();
+      bgmIsPlaying = false;
       if (bgmIcon) bgmIcon.textContent = '▶'; // 재생 아이콘
     }
   });
