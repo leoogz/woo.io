@@ -24,7 +24,7 @@ body {
 .card {
   width: 100%;
   max-width: 420px;
-  margin: 0 auto 0; /* 카드 바로 아래에 여백 두지 않음 */
+  margin: 0 auto 260px; /* 메인 카드 아래에 넉넉한 여백 추가 */
   padding: 32px 24px 28px;
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.9);
@@ -211,7 +211,7 @@ body {
 .timeline-section {
   width: 100%;
   max-width: 480px;
-  margin: 520px auto 0; /* 메인 카드에서 연혁까지 매우 크게 띄워서 거의 다른 페이지처럼 */
+  margin: 80px auto 0; /* 카드 margin-bottom 이후 적당한 추가 간격만 유지 */
   padding: 40px 8px 0;
 }
 
@@ -299,11 +299,11 @@ body {
 
   .card {
     padding: 24px 18px 22px;
-    margin: 0 auto 0; /* 모바일도 카드 바로 아래에 여백 없음 */
+    margin: 0 auto 220px; /* 모바일에서 카드와 연혁 사이 여백 */
   }
 
   .timeline-section {
     padding: 32px 4px 0;
-    margin-top: 520px; /* 작은 화면에서도 버튼 누르면 완전 다른 페이지 느낌 */
+    margin-top: 80px; /* 모바일에서도 카드 margin 뒤에 적당한 추가 간격 */
   }
 }
