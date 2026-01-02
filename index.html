@@ -21,12 +21,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      scroll-behavior: smooth;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 640px;
+      padding: 32px 12px 48px;
     }
 
     .card {
       width: 100%;
       max-width: 420px;
-      margin: 24px;
+      margin: 0 auto 32px;
       padding: 32px 24px 28px;
       border-radius: 24px;
       background: rgba(255, 255, 255, 0.9);
@@ -101,10 +108,37 @@
       color: #999;
       opacity: 0;
       transition: opacity 0.6s ease;
+      margin-bottom: 20px;
     }
 
     .footer.visible {
       opacity: 1;
+    }
+
+    .memory-button {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 6px 18px;
+      border-radius: 999px;
+      border: none;
+      background: #ff6b81;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+      transform: translateY(0);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      opacity: 0;
+    }
+
+    .memory-button.visible {
+      opacity: 1;
+    }
+
+    .memory-button:hover {
+      background: #ff4b6a;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
     }
 
     /* 첫 진입용 크게 나오는 메인 문구 */
@@ -140,6 +174,78 @@
       transform: translateY(-80px) scale(0.6);
     }
 
+    /* 타임라인 영역 */
+    .timeline-section {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px 8px 0;
+    }
+
+    .timeline-title {
+      font-size: 1.8rem;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 12px;
+      text-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    }
+
+    .timeline-subtitle {
+      font-size: 1.2rem;
+      text-align: center;
+      color: #ffeef3;
+      margin-bottom: 20px;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 26px;
+      margin: 0 auto 12px;
+      border-left: 3px solid rgba(255, 255, 255, 0.7);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 28px;
+      padding-left: 14px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -11px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+
+    .timeline-date {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .timeline-caption {
+      font-size: 1.25rem;
+      color: #fff9fb;
+      margin-bottom: 6px;
+    }
+
+    .timeline-photo-placeholder {
+      width: 100%;
+      border-radius: 16px;
+      min-height: 120px;
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px dashed rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
     @media (max-width: 480px) {
       .card {
         padding: 24px 18px 22px;
@@ -157,29 +263,72 @@
         font-size: 2rem;
         white-space: normal;
       }
+
+      .timeline-section {
+        padding: 8px 4px 0;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="card">
-    <!-- 처음에 크게 보여줄 문구 -->
-    <div class="intro-overlay">
-      <div class="intro-text" id="introText">가현 ❤️ 영규 200 days</div>
-    </div>
+  <div class="page-wrapper">
+    <main class="card">
+      <!-- 처음에 크게 보여줄 문구 -->
+      <div class="intro-overlay">
+        <div class="intro-text" id="introText">가현 ❤️ 영규 200 days</div>
+      </div>
 
-    <!-- 최종 위치의 타이틀 영역 -->
-    <div class="tag" id="tag">가현 ❤️ 영규 200 days</div>
-    <div class="message" id="message">
-      <div class="message-line title-line">우리 200일 축하해 💕</div>
-      <p class="date" id="date">From 25.06.18 ~ To 26.01.03</p>
-      <div class="message-line">처음 1일부터 하나씩 쌓여서</div>
-      <div class="message-line">어느새 200일이라는 시간이 되었어.</div>
-      <div class="message-line">함께한 모든 순간들이 소중했고,</div>
-      <div class="message-line">앞으로의 하루하루도 너와 같이 걷고 싶어.</div>
-      <div class="message-line">항상 고맙고, 많이 사랑해.</div>
-    </div>
-    <p class="footer" id="footer">from. 🐶영규</p>
-  </main>
+      <!-- 최종 위치의 타이틀 영역 -->
+      <div class="tag" id="tag">가현 ❤️ 영규 200 days</div>
+      <div class="message" id="message">
+        <div class="message-line title-line">우리 200일 축하해 💕</div>
+        <p class="date" id="date">From 25.06.18 ~ To 26.01.03</p>
+        <div class="message-line">처음 1일부터 하나씩 쌓여서</div>
+        <div class="message-line">어느새 200일이라는 시간이 되었어.</div>
+        <div class="message-line">함께한 모든 순간들이 소중했고,</div>
+        <div class="message-line">앞으로의 하루하루도 너와 같이 걷고 싶어.</div>
+        <div class="message-line">항상 고맙고, 많이 사랑해.</div>
+      </div>
+      <p class="footer" id="footer">from. 🐶영규</p>
+      <button class="memory-button" id="memoryButton">우리 추억 보러 갈래?</button>
+    </main>
+
+    <!-- 추억 타임라인 섹션 -->
+    <section class="timeline-section" id="memories">
+      <h2 class="timeline-title">우리 추억들</h2>
+      <p class="timeline-subtitle">위에서부터 천천히 내려가면서, 우리 시간을 같이 다시 걸어가 보자.</p>
+
+      <div class="timeline">
+        <article class="timeline-item">
+          <span class="timeline-dot"></span>
+          <div class="timeline-date">2025. 06. 18</div>
+          <div class="timeline-caption">처음 만난 날</div>
+          <div class="timeline-photo-placeholder">여기에 처음 만난 날 사진이 들어갈 거야 💭</div>
+        </article>
+
+        <article class="timeline-item">
+          <span class="timeline-dot"></span>
+          <div class="timeline-date">2025. 07. XX</div>
+          <div class="timeline-caption">첫 데이트</div>
+          <div class="timeline-photo-placeholder">여기에 우리 첫 데이트 사진이 들어갈 거야 💭</div>
+        </article>
+
+        <article class="timeline-item">
+          <span class="timeline-dot"></span>
+          <div class="timeline-date">2025. 09. XX</div>
+          <div class="timeline-caption">처음 같이 간 여행</div>
+          <div class="timeline-photo-placeholder">여기에 첫 여행 사진이 들어갈 거야 💭</div>
+        </article>
+
+        <article class="timeline-item">
+          <span class="timeline-dot"></span>
+          <div class="timeline-date">2026. 01. 03</div>
+          <div class="timeline-caption">우리 200일</div>
+          <div class="timeline-photo-placeholder">여기에 오늘의 우리 사진이 들어갈 거야 💭</div>
+        </article>
+      </div>
+    </section>
+  </div>
 
   <script>
     const lines = document.querySelectorAll('.message-line');
@@ -187,6 +336,7 @@
     const tag = document.getElementById('tag');
     const date = document.getElementById('date');
     const footer = document.getElementById('footer');
+    const memoryButton = document.getElementById('memoryButton');
     let index = 0;
 
     function showNextLine() {
@@ -195,8 +345,11 @@
         index++;
         setTimeout(showNextLine, 900); // 다음 줄 간격
       } else {
-        // 문장이 다 나오면 footer도 나타나게
+        // 문장이 다 나오면 footer와 버튼도 나타나게
         footer.classList.add('visible');
+        setTimeout(() => {
+          memoryButton.classList.add('visible');
+        }, 300);
       }
     }
 
@@ -219,6 +372,14 @@
         date.classList.add('visible');
         setTimeout(showNextLine, 400);
       }, 2500);
+    });
+
+    // "우리 추억 보러 갈래?" 버튼 클릭 시, 타임라인 섹션으로 부드럽게 스크롤
+    memoryButton.addEventListener('click', () => {
+      const target = document.getElementById('memories');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   </script>
 </body>
