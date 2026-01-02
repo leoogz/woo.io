@@ -7,6 +7,7 @@ const tag = document.getElementById('tag');
 const date = document.getElementById('date');
 const footer = document.getElementById('footer');
 const memoryButton = document.getElementById('memoryButton');
+const bgmButton = document.getElementById('bgmButton');
 let index = 0;
 
 function showNextLine() {
@@ -78,4 +79,28 @@ if ('IntersectionObserver' in window && timelineItems.length > 0) {
   timelineItems.forEach((item) => observer.observe(item));
 }
 
-// BGM 관련 코드는 나중에 audio 파일 준비되면 추가 예정입니다.
+// BGM 토글 (아이콘만 변경)
+if (bgmButton) {
+  const bgmIcon = bgmButton.querySelector('.bgm-icon');
+  const bgm = new Audio('assets/audio/bgm.mp3'); // assets/audio/bgm.mp3 에 파일 추가
+  bgm.loop = true;
+  let isPlaying = false;
+
+  bgmButton.addEventListener('click', () => {
+    if (!isPlaying) {
+      bgm
+        .play()
+        .then(() => {
+          isPlaying = true;
+          if (bgmIcon) bgmIcon.textContent = '❚❚'; // 일시정지 아이콘 느낌
+        })
+        .catch((err) => {
+          console.error('BGM 재생 실패:', err);
+        });
+    } else {
+      bgm.pause();
+      isPlaying = false;
+      if (bgmIcon) bgmIcon.textContent = '▶'; // 재생 아이콘
+    }
+  });
+}
